@@ -235,15 +235,15 @@ function generateProfile(idNum, gender) {
 const maleProfiles = [];
 const femaleProfiles = [];
 
-for (let i = 1; i <= 75; i++) {
+for (let i = 1; i <= 110; i++) {
   maleProfiles.push(generateProfile(i, 'Male'));
 }
 
-for (let i = 101; i <= 175; i++) {
+for (let i = 201; i <= 310; i++) {
   femaleProfiles.push(generateProfile(i, 'Female'));
 }
 
 fs.writeFileSync(path.join(process.cwd(), 'src/data/male.json'), JSON.stringify(maleProfiles, null, 2));
 fs.writeFileSync(path.join(process.cwd(), 'src/data/female.json'), JSON.stringify(femaleProfiles, null, 2));
 
-console.log('Seeded 75 male and 75 female static profiles successfully!');
+console.log(`Seeded ${maleProfiles.length} male and ${femaleProfiles.length} female static profiles successfully!`);
