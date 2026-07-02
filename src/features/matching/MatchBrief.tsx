@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Profile, MatchExplanation } from '../../types';
 import { useAI } from '../../hooks/useAI';
-import { Sparkles, AlertCircle, Copy, Check, Printer, Mail } from 'lucide-react';
+import { Sparkles, AlertCircle, Copy, Check, Printer, Mail, MessageCircle } from 'lucide-react';
 
 interface MatchBriefProps {
   client: Profile;
@@ -18,6 +18,7 @@ export const MatchBrief: React.FC<MatchBriefProps> = ({
   const [emailTone, setEmailTone] = useState<'professional' | 'friendly' | 'warm'>('professional');
   const [copied, setCopied] = useState(false);
   const [sentMockEmail, setSentMockEmail] = useState(false);
+  const [whatsappCopied, setWhatsappCopied] = useState(false);
 
   // Render Skeleton Loader
   if (loading) {
@@ -62,6 +63,29 @@ export const MatchBrief: React.FC<MatchBriefProps> = ({
     navigator.clipboard.writeText(activeEmailContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleCopyWhatsApp = () => {
+    const whatsappMsg = `*${client.fullName}* 🤝 *${candidate.fullName}*
+
+*Quick Match Summary:*
+📊 Compatibility: ${displayAnalysis.score}%
+${candidate.designation} at ${candidate.company}
+📍 ${candidate.city} | ${candidate.age} yrs | ${candidate.height}
+🎓 ${candidate.degree} | ${candidate.college}
+
+*Why this match works:*
+${displayAnalysis.reasons.slice(0, 3).map(r => `✓ ${r}`).join('\n')}
+
+*AI Recommendation:*
+_${displayAnalysis.nextStep}_
+
+_Best regards,
+The Date Crew Matchmaking Team_`;
+
+    navigator.clipboard.writeText(whatsappMsg);
+    setWhatsappCopied(true);
+    setTimeout(() => setWhatsappCopied(false), 2000);
   };
 
   const handleMockSendEmail = () => {
@@ -277,6 +301,14 @@ export const MatchBrief: React.FC<MatchBriefProps> = ({
             
             {/* Action buttons */}
             <div className="absolute right-2.5 bottom-3.5 flex gap-2">
+              <button
+                type="button"
+                onClick={handleCopyWhatsApp}
+                className="bg-success/10 hover:bg-success/20 border border-success/20 p-1.5 rounded shadow-sm text-success hover:text-success transition-colors cursor-pointer flex items-center justify-center"
+                title="Copy as WhatsApp Message"
+              >
+                {whatsappCopied ? <Check className="w-3.5 h-3.5" /> : <MessageCircle className="w-3.5 h-3.5" />}
+              </button>
               <button
                 type="button"
                 onClick={handleCopyEmail}

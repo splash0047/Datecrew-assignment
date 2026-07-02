@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Profile } from '../../types';
-import { ShieldCheck, AlertTriangle } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, Lock } from 'lucide-react';
+import { PIIField, DataSensitivityBadge, PrivacyNotice } from '../../components/PIIMasking';
 
 interface ProfileDetailsProps {
   client: Profile;
@@ -35,6 +36,15 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ client, onComple
 
   return (
     <div className="flex flex-col gap-5 w-full">
+      {/* Data Sensitivity Notice */}
+      <div className="flex items-center justify-between">
+        <DataSensitivityBadge />
+        <div className="flex items-center gap-1 text-[9px] text-text-secondary">
+          <Lock className="w-3 h-3" />
+          <span>PII masked until match confirmation</span>
+        </div>
+      </div>
+
       {/* Verification Checklist Banner */}
       <div className="bg-white border border-border rounded-card p-4 shadow-sm flex flex-col gap-2">
         <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wider">Verification Checklist</span>
@@ -177,7 +187,15 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ client, onComple
             </div>
             <div>
               <span className="text-text-secondary block">Annual Income</span>
-              <span className="font-semibold text-primary font-mono text-sm mt-0.5 block">{client.income} LPA</span>
+              <PIIField value={`${client.income} LPA`} sensitivityLevel="high" />
+            </div>
+            <div>
+              <span className="text-text-secondary block">Contact</span>
+              <PIIField value={client.phone} sensitivityLevel="high" />
+            </div>
+            <div>
+              <span className="text-text-secondary block">Email</span>
+              <PIIField value={client.email} sensitivityLevel="medium" />
             </div>
             <div>
               <span className="text-text-secondary block">Marital Status</span>
@@ -225,6 +243,9 @@ export const ProfileDetails: React.FC<ProfileDetailsProps> = ({ client, onComple
           </div>
         )}
       </div>
+
+      {/* Privacy Notice */}
+      <PrivacyNotice />
     </div>
   );
 };

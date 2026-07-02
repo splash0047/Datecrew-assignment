@@ -5,6 +5,8 @@ import { CopilotPriorities } from './features/dashboard/CopilotPriorities';
 import { SaaSMetrics } from './features/dashboard/SaaSMetrics';
 import { RecentDecisions } from './features/dashboard/RecentDecisions';
 import { ActivityFeed } from './features/dashboard/ActivityFeed';
+import { ProductivityMetrics } from './features/dashboard/ProductivityMetrics';
+import { FeedbackInsights } from './features/matching/FeedbackInsights';
 import { CustomerTable } from './features/profiles/CustomerTable';
 import { DrawerContainer } from './features/profiles/DrawerContainer';
 import { useProfileStore } from './stores/profileStore';
@@ -117,10 +119,12 @@ function App() {
           <>
             <CopilotPriorities onSelectClient={handleSelectClient} />
             <SaaSMetrics />
+            <ProductivityMetrics />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full items-start">
               <RecentDecisions />
               <ActivityFeed />
             </div>
+            <FeedbackInsights />
             <CustomerTable onSelectClient={handleSelectClient} />
           </>
         ) : (
